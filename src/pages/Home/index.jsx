@@ -1,8 +1,8 @@
 import React from 'react';
 import { Row, Col, Image, Button } from '@nutui/nutui-react'
-import NavGrid from '../../components/Home/NavGrid/index'
+import NavGrid from '@/components/Home/NavGrid/index'
 
-import Api from '../../api'
+import Api from '@/api'
 function Home() {  
     const src = 'https://storage.360buyimg.com/imgtools/e067cd5b69-07c864c0-dd02-11ed-8b2c-d7f58b17086a.png'
     Api.get('/users')  

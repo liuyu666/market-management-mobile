@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Toast } from "@nutui/nutui-react";
 import { Image } from "@nutui/icons-react";
+import { isLogin } from "../../../utils";
 
 const routeList = [
     {
@@ -25,7 +26,15 @@ const routeList = [
 const Demo1 = () => {
     let navigate = useNavigate();
 
-    function handleClick ({key, type='jump'}) {
+    function handleClick ({ key, type = 'jump' }) {
+        const login = isLogin();
+        if (!login) {
+            Toast.show("请先登录");
+            setTimeout(() => {
+                navigate('Login');
+            }, 500);
+            return;
+        }
         if (type == 'toast') {
             Toast.show("敬请期待～");
         } else if (type == "jump") {
