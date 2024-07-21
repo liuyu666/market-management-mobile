@@ -4,26 +4,9 @@ import About from '../pages/About/index.jsx';
 import ProductEdit from '../pages/ProductEdit/index.jsx';
 import ProductList from '../pages/ProductList/index.jsx';
 
-
-// {
-//     key: "uploadProduct",
-//     text: "上传商品",
-// },
-// {
-//     key: "productList",
-//     text: "商品列表",
-// },
-// {
-//     key: "shopInfo",
-//     text: "店铺信息",
-// },
-// {
-//     key: "more",
-//     text: "更多",
-//     type: "toast",
-// },
 // 你可以在这里导出Router组件，包含所有的路由配置  
 const AppRouter = () => {
+    console.log('root App Router=====')
     return (
         <Router>
             <Routes>

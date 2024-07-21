@@ -2,9 +2,9 @@ import axios from 'axios';
 
 // 创建axios实例  
 const instance = axios.create({
-    baseURL: 'https://api.example.com', // 基础URL  
-    timeout: 1000, // 请求超时时间  
-    headers: { 'X-Custom-Header': 'foobar' }, // 默认请求头  
+    baseURL: 'http://liuyu666.cn', // 基础URL  
+    timeout: 5000, // 请求超时时间  
+    headers: { }, // 默认请求头  
 });
 
 // 请求拦截器  
