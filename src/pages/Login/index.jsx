@@ -1,26 +1,20 @@
 import React from 'react';
-import { Form, Button, InputNumber, Input, TextArea } from '@nutui/nutui-react'
+import { useNavigate } from "react-router-dom";
+import { Form, Button, InputNumber, Input, Toast } from '@nutui/nutui-react'
 
-import Api from '../../api'
-function Login() {  
-    // Api.get('/admin/login')  
-    //     .then(users => {  
-    //         console.log(users);  
-    //     })  
-    //     .catch(error => {  
-    //         console.error('There was an error!', error);  
-    //     }); 
-    const submitForm = ({ account, code }) => {
-        Api.post('/admin/login', {
-            account,
-            code
-        })  
-            .then(users => {
-                console.log(111,users);
+import { login } from '@/services/login';
+function Login () {
+    let navigate = useNavigate();
+    const submitForm = async ({ account, code }) => {
+        try {
+            await login({ account, code })
+            navigate('/')
+        } catch ({ msg }) {
+            Toast.show({
+                content: msg || '登录失败',
+                icon: 'fail',
             })
-            .catch(error => {
-                console.error('There was an error!', error);
-            }); 
+        }
     }
     return <>
         <Form
