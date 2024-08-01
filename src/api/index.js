@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 创建axios实例  
 const instance = axios.create({
-    baseURL: 'http://liuyu666.cn', // 基础URL  
+    baseURL: 'http://82.157.176.213:3000', // 基础URL  
     timeout: 5000, // 请求超时时间  
     headers: { }, // 默认请求头  
 });
