@@ -3,15 +3,11 @@ import { useNavigate } from "react-router-dom";
 import {
     Form,
     Input,
+    InputNumber,
     Cell,
-    Switch,
-    Checkbox,
-    Radio,
     Picker,
     Uploader,
     Button,
-    Rate,
-    Range,
     Toast,
     NavBar,
 } from "@nutui/nutui-react";
@@ -22,30 +18,45 @@ import {
     Cart,
     ArrowLeft,
     Close,
+    Login,
 } from "@nutui/icons-react";
 
-const Demo7 = () => {
+import { addProduct } from "@/services/product";
+
+const ProductEdit = () => {
     let navigate = useNavigate();
 
     function handleGoBack () {
         // 使用-1作为参数来模拟后退按钮的行为
         navigate(-1);
     }
-    const pickerOptions = [
-        { value: 4, text: "BeiJing" },
-        { value: 1, text: "NanJing" },
-        { value: 2, text: "WuXi" },
-        { value: 8, text: "DaQing" },
-        { value: 9, text: "SuiHua" },
-        { value: 10, text: "WeiFang" },
-        { value: 12, text: "ShiJiaZhuang" },
-    ];
+    // todo 后端返回
+    const unitOptions = [
+        { value: 1, text: '斤' },
+        { value: 2, text: 'g' },
+        { value: 3, text: 'kg' },
+        { value: 4, text: '件' },
+        { value: 5, text: '个' },
+        { value: 6, text: '套' }
+    ]
     const submitFailed = (error) => {
         Toast.show({ content: JSON.stringify(error), icon: "fail" });
     };
 
-    const submitSucceed = (values) => {
+    const submitSucceed = async (values = {}) => {
+        console.log('values: ', values);
+        // todo 提交到后端
+        await addProduct({
+            title: values.title,
+            price: values.price,
+            images: values.images?.[0]?.url,
+            unit: values.unit?.[0],
+        })
         Toast.show({ content: JSON.stringify(values), icon: "success" });
+    };
+
+    const handleUploadSuccess = (file) => {
+        console.log('file: ', file);
     };
     return (
         <>
@@ -73,55 +84,30 @@ const Demo7 = () => {
                         <Button nativeType="submit" type="primary">
                             提交
                         </Button>
-                        <Button nativeType="reset" style={{ marginLeft: "20px" }}>
-                            重置
-                        </Button>
                     </div>
                 }
                 onFinish={(values) => submitSucceed(values)}
                 onFinishFailed={(values, errors) => submitFailed(errors)}
             >
-                <Form.Item label="Input" name="form_input">
-                    <Input placeholder="placeholder" />
+                <Form.Item label="商品名称" name="title">
+                    <Input placeholder="请输入商品名称" />
                 </Form.Item>
-                <Form.Item label="Switch" name="switch">
-                    <Switch />
+                <Form.Item label="价格" name="price">
+                    <Input placeholder="请输入商品价格" />
                 </Form.Item>
-                <Form.Item label="Checkbox" name="checkbox">
-                    <Checkbox labelPosition="right" label="Option 1" />
-                </Form.Item>
-                <Form.Item label="Check Group" name="checkbox_group">
-                    <Checkbox.Group>
-                        <Checkbox labelPosition="right" label="Option 1" value={1} />
-                        <Checkbox labelPosition="right" label="Option 2" value={2} />
-                    </Checkbox.Group>
-                </Form.Item>
-                <Form.Item label="Radio" name="radio">
-                    <Radio value="1">Radio 1</Radio>
-                </Form.Item>
-                <Form.Item label="Radio Group" name="radio_group">
-                    <Radio.Group>
-                        <Radio value="1">Radio 1</Radio>
-                        <Radio value="2">Radio 2</Radio>
-                    </Radio.Group>
-                </Form.Item>
-                <Form.Item label="Rate" name="rate">
-                    <Rate defaultValue={0} />
-                </Form.Item>
-                <Form.Item label="Range" name="range">
-                    <Range max={10} min={-10} />
-                </Form.Item>
+
                 <Form.Item
-                    label="Picker"
-                    name="picker"
+                    label="单位"
+                    name="unit"
                     trigger="onConfirm"
                     getValueFromEvent={(...args) => args[1]}
                     onClick={(event, ref) => {
                         ref.open();
                     }}
                 >
-                    <Picker options={[pickerOptions]}>
+                    <Picker options={[unitOptions]}>
                         {(value) => {
+    
                             return (
                                 <Cell
                                     style={{
@@ -131,9 +117,9 @@ const Demo7 = () => {
                                     className="nutui-cell--clickable"
                                     title={
                                         value.length
-                                            ? pickerOptions.filter((po) => po.value === value[0])[0]
+                                            ? unitOptions.filter((po) => po.value === value[0])[0]
                                                 ?.text
-                                            : "Please select"
+                                            : "请选择"
                                     }
                                     extra={<ArrowRight />}
                                     align="center"
@@ -142,25 +128,19 @@ const Demo7 = () => {
                         }}
                     </Picker>
                 </Form.Item>
+                <Form.Item label="库存" name="num">
+                    <InputNumber defaultValue={1} step={1} digits={0} />
+                </Form.Item>
                 <Form.Item
-                    label="Uploader"
-                    name="files"
-                    initialValue={[
-                        {
-                            name: "file1.png",
-                            url: "https://m.360buyimg.com/babel/jfs/t1/164410/22/25162/93384/616eac6cE6c711350/0cac53c1b82e1b05.gif",
-                            status: "success",
-                            message: "success",
-                            type: "image",
-                            uid: "122",
-                        },
-                    ]}
+                    label="商品图片"
+                    name="images"
+                    initialValue={[]}
                 >
-                    <Uploader url="https://my-json-server.typicode.com/linrufeng/demo/posts" />
+                    <Uploader onSuccess={handleUploadSuccess} name="image" url="http://liuyu666.cn/common/upload" />
                 </Form.Item>
             </Form>
         </>
     );
 };
 
-export default Demo7;
+export default ProductEdit;
