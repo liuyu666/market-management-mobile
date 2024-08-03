@@ -6,7 +6,7 @@ import { isLogin } from "../../../utils";
 
 const routeList = [
     {
-        key: "uploadProduct",
+        key: "addProduct",
         text: "上传商品",
     },
     {

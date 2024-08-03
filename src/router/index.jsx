@@ -12,7 +12,8 @@ const AppRouter = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/uploadProduct" element={<ProductEdit />} />
+                <Route path="/addProduct" element={<ProductEdit />} />
+                <Route path="/editProduct/:pid" element={<ProductEdit />} />
                 <Route path="/productList" element={<ProductList />} />
                 <Route path="/login" element={<Login />} />
                 {/* 你可以在这里继续添加更多的路由 */}

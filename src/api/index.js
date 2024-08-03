@@ -15,7 +15,7 @@ instance.interceptors.request.use(
         // 例如，你可以在这里添加token到headers中  
         const token = localStorage.getItem(TOKEN_NAME);
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+            config.headers["x-token"] = `${token}`;
         }
         return config;
     },
@@ -32,6 +32,9 @@ instance.interceptors.response.use(
         // 例如，你可以在这里根据状态码判断是否需要重定向或抛出错误  
         if (response.status === 200) {
             return response.data; // 只返回数据部分  
+        } else if (response.status === 401) {
+            // 跳转登录页面
+            location.href = location.origin + "/login"
         } else {
             return Promise.reject(new Error('Error ' + response.status));
         }

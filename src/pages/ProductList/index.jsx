@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
-import { Table, Button, Toast, NavBar } from '@nutui/nutui-react'
+import { Table, Pagination, Button, Image, NavBar } from '@nutui/nutui-react'
 import { Star, ArrowLeft } from '@nutui/icons-react'
 
 import Api from '../../api'
@@ -26,40 +26,60 @@ const ProductList = () => {
         {
             title: '图片',
             key: 'images',
+            render: (data) => {
+                return <Image src={data.images.split(";")[0]} width="20" height="20" fit="cover" />
+            }
         },
         {
             title: '操作',
             fixed: 'right',
-            key: 'render',
+            key: 'operate',
         },
     ])
     const [productList, setProductList] = useState([])
+    // const [total, setTotal] = useState(0)
+    // const [currentPage, setCurrentPage] = useState(1)
+
+    const editProduct = (product) => {
+        console.log('product: ', product);
+        product.id && navigate(`/editProduct/${product.id}`)
+    }
 
     const formatProductList = (data) => {
         setProductList(data.map(item => {
-            item.operate = (item) => {
+            item.operate = () => {
                 return (
                     <Button
                         type="success"
                         size="small"
-                        onClick={() => window.open('https://www.jd.com')}
+                        onClick={() => editProduct(item)}
                     >
-                        <div>跳转到京东</div>
+                        <div>编辑</div>
                     </Button>
                 )
             }
             return item
         }))
     }
-    
-    useEffect(() => {
+
+    const fetchList = () => {
         Api.get('/product/list')
             .then(res => {
-                formatProductList(res.data && res.data && res.data.list)
+                formatProductList(res.data && res.data && res.data.list);
+                setTotal(res.data.total || 0)
             })
             .catch(error => {
                 console.error('There was an error!', error);
             });
+    }
+
+    const pageChange = (v) => {
+        setCurrentPage(v)
+        fetchList
+    }
+
+    useEffect(() => {
+        fetchList()
     }, [])
     
 
@@ -77,6 +97,13 @@ const ProductList = () => {
             商品列表
         </NavBar>
         <Table columns={columns} style={{ height: 500 }} data={productList} />
+        {/* <Pagination
+            value={currentPage}
+            total={total}
+            pageSize={1}
+            mode="simple"
+            onChange={pageChange}
+        /> */}
     </>
 }
 export default ProductList

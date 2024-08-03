@@ -5,13 +5,13 @@ import NavGrid from '@/components/Home/NavGrid/index'
 import Api from '@/api'
 function Home() {  
     const src = 'https://storage.360buyimg.com/imgtools/e067cd5b69-07c864c0-dd02-11ed-8b2c-d7f58b17086a.png'
-    Api.get('/users')  
-        .then(users => {  
-            console.log(users);  
-        })  
-        .catch(error => {  
-            console.error('There was an error!', error);  
-        }); 
+    // Api.get('/users')  
+    //     .then(users => {  
+    //         console.log(users);  
+    //     })  
+    //     .catch(error => {  
+    //         console.error('There was an error!', error);  
+    //     }); 
     return <>
         <Image
             className='w-full'

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     Form,
     Input,
@@ -12,13 +12,7 @@ import {
     NavBar,
 } from "@nutui/nutui-react";
 import {
-    ArrowRight,
-    Share,
-    More,
-    Cart,
-    ArrowLeft,
-    Close,
-    Login,
+    ArrowLeft
 } from "@nutui/icons-react";
 
 import { addProduct } from "@/services/product";
@@ -30,6 +24,9 @@ const ProductEdit = () => {
         // 使用-1作为参数来模拟后退按钮的行为
         navigate(-1);
     }
+    
+    const {pid} = useParams()
+    console.log('pid: ', pid);
 
     const [form] = Form.useForm()
 
@@ -47,13 +44,17 @@ const ProductEdit = () => {
     };
 
     const submitSucceed = async (values = {}) => {
-        console.log('values: ', values);
+        const title = values.title;
+        const price = values.price;
+        const inventory = values.inventory;
+        const images = values.images.map(({ url }) => url).join(';');
+
         // todo 提交到后端
         await addProduct({
-            title: values.title,
-            price: values.price,
-            images: values.images?.[0]?.url,
-            // unit: values.unit?.[0],
+            title,
+            price,
+            inventory,
+            images,
         })
         Toast.show({ content: JSON.stringify(values), icon: "success" });
     };
@@ -62,14 +63,23 @@ const ProductEdit = () => {
         const res = JSON.parse(responseText);
         const { imageUrl } = res.data || {};
 
-        console.log('imageUrl.split() ', imageUrl.split('/'));
+        const images = form.getFieldValue('images')
+        images.push({
+            name: imageUrl.split('/').pop(),
+            url: imageUrl,
+            status: 'success',
+            type: 'image',
+        })
         form.setFieldsValue({
-            images: [{
-                name: imageUrl.split('/').pop(),
-                url: imageUrl,
-                status: 'success',
-                type: 'image',
-            }] })
+            images
+        })
+    };
+
+    const handleDeleteFile = (file) => {
+        const images = form.getFieldValue('images')
+        form.setFieldsValue({
+            images: images.filter(({name}) => name !== file.name)
+        })
     };
 
     return (
@@ -83,7 +93,7 @@ const ProductEdit = () => {
                 }
                 onBackClick={handleGoBack}
             >
-                上传商品
+                {pid ? "编辑商品": "增加商品"}
             </NavBar>
             <Form
                 form={form}
@@ -143,7 +153,7 @@ const ProductEdit = () => {
                         }}
                     </Picker>
                 </Form.Item> */}
-                <Form.Item label="库存" name="num">
+                <Form.Item label="库存" name="inventory">
                     <InputNumber defaultValue={1} step={1} digits={0} />
                 </Form.Item>
                 <Form.Item
@@ -151,7 +161,7 @@ const ProductEdit = () => {
                     name="images"
                     initialValue={[]}
                 >
-                    <Uploader onSuccess={handleUploadSuccess} name="image" url="http://liuyu666.cn/common/upload" />
+                    <Uploader multiple maxCount="3" onDelete={handleDeleteFile} onSuccess={handleUploadSuccess} name="image" url="http://liuyu666.cn/common/upload" />
                 </Form.Item>
             </Form>
         </>
