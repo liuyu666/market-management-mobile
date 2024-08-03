@@ -71,17 +71,18 @@ const ProductEdit = () => {
     const handleUploadSuccess = ({ responseText }) => {
         const res = JSON.parse(responseText);
         const { imageUrl } = res.data || {};
-
-        const images = form.getFieldValue('images')
-        images.push({
-            name: imageUrl.split('/').pop(),
-            url: imageUrl,
-            status: 'success',
-            type: 'image',
-        })
-        form.setFieldsValue({
-            images
-        })
+        setTimeout(() => {
+            const images = form.getFieldValue('images')
+            images.push({
+                name: imageUrl.split('/').pop(),
+                url: imageUrl,
+                status: 'success',
+                type: 'image',
+            })
+            form.setFieldsValue({
+                images
+            })
+        }, 100);
     };
 
     const handleDeleteFile = (file) => {
@@ -127,7 +128,7 @@ const ProductEdit = () => {
                     <Input placeholder="请输入商品名称" />
                 </Form.Item>
                 <Form.Item required label="价格" name="price">
-                    <InputNumber defaultValue={0} placeholder="请输入商品价格" />
+                    <Input type="number" placeholder="请输入商品价格" />
                 </Form.Item>
 
                 {/* <Form.Item
