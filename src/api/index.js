@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { TOKEN_NAME } from "@/configs";
 
 // 创建axios实例  
 const instance = axios.create({
-    baseURL: 'http://82.157.176.213:3000', // 基础URL  
+    baseURL: 'http://liuyu666.cn/', // 基础URL  
     timeout: 5000, // 请求超时时间  
-    headers: { }, // 默认请求头  
+    headers: {}, // 默认请求头  
 });
 
 // 请求拦截器  
@@ -12,7 +13,7 @@ instance.interceptors.request.use(
     config => {
         // 在发送请求之前做些什么  
         // 例如，你可以在这里添加token到headers中  
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem(TOKEN_NAME);
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }

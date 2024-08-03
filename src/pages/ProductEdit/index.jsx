@@ -30,6 +30,9 @@ const ProductEdit = () => {
         // 使用-1作为参数来模拟后退按钮的行为
         navigate(-1);
     }
+
+    const [form] = Form.useForm()
+
     // todo 后端返回
     const unitOptions = [
         { value: 1, text: '斤' },
@@ -50,14 +53,25 @@ const ProductEdit = () => {
             title: values.title,
             price: values.price,
             images: values.images?.[0]?.url,
-            unit: values.unit?.[0],
+            // unit: values.unit?.[0],
         })
         Toast.show({ content: JSON.stringify(values), icon: "success" });
     };
 
-    const handleUploadSuccess = (file) => {
-        console.log('file: ', file);
+    const handleUploadSuccess = ({ responseText }) => {
+        const res = JSON.parse(responseText);
+        const { imageUrl } = res.data || {};
+
+        console.log('imageUrl.split() ', imageUrl.split('/'));
+        form.setFieldsValue({
+            images: [{
+                name: imageUrl.split('/').pop(),
+                url: imageUrl,
+                status: 'success',
+                type: 'image',
+            }] })
     };
+
     return (
         <>
             <NavBar
@@ -72,6 +86,7 @@ const ProductEdit = () => {
                 上传商品
             </NavBar>
             <Form
+                form={form}
                 style={{ "--nutui-form-item-label-width": "120px" }}
                 footer={
                     <div
@@ -96,7 +111,7 @@ const ProductEdit = () => {
                     <Input placeholder="请输入商品价格" />
                 </Form.Item>
 
-                <Form.Item
+                {/* <Form.Item
                     label="单位"
                     name="unit"
                     trigger="onConfirm"
@@ -127,7 +142,7 @@ const ProductEdit = () => {
                             );
                         }}
                     </Picker>
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item label="库存" name="num">
                     <InputNumber defaultValue={1} step={1} digits={0} />
                 </Form.Item>
