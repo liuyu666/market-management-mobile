@@ -11,7 +11,7 @@ export const login = ({ account, code }) => {
             .then(data => {
                 const { data: resData, msg, code } = data || {}
                 switch (code) {
-                    case 200:
+                    case 0:
                         localStorage.setItem(TOKEN_NAME, resData.token)
                         resolve({
                             msg

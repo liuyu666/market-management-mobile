@@ -47,8 +47,8 @@ const ProductEdit = () => {
     const submitSucceed = async (values = {}) => {
         setLoading(true)
         const title = values.title;
-        const price = values.price;
-        const inventory = values.inventory;
+        const price = Number(values.price);
+        const inventory = Number(values.inventory) || 1;
         const images = values.images.map(({ url }) => url).join(';');
 
         // todo 提交到后端
@@ -57,7 +57,7 @@ const ProductEdit = () => {
                 title,
                 price,
                 inventory,
-                images,
+                images
             })
             Toast.show({ content: "上传成功", icon: "success" });
             navigate('/productList')
@@ -127,7 +127,16 @@ const ProductEdit = () => {
                 <Form.Item required label="商品名称" name="title">
                     <Input placeholder="请输入商品名称" />
                 </Form.Item>
-                <Form.Item required label="价格" name="price">
+                <Form.Item
+                    required
+                    rules={
+                        [
+                            { required: true, message: '请输入价格' }
+                        ]
+                    }
+                    label="价格"
+                    name="price"
+                >
                     <Input type="number" placeholder="请输入商品价格" />
                 </Form.Item>
 

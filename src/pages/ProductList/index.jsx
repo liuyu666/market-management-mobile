@@ -63,7 +63,7 @@ const ProductList = () => {
     }
 
     const fetchList = () => {
-        Api.get('/product/list')
+        Api.get('/management/product/list')
             .then(res => {
                 formatProductList(res.data && res.data && res.data.list);
                 // setTotal(res.data.total || 0)
