@@ -66,7 +66,7 @@ const ProductList = () => {
         Api.get('/product/list')
             .then(res => {
                 formatProductList(res.data && res.data && res.data.list);
-                setTotal(res.data.total || 0)
+                // setTotal(res.data.total || 0)
             })
             .catch(error => {
                 console.error('There was an error!', error);
