@@ -41,7 +41,7 @@ const ProductList = () => {
     // const [currentPage, setCurrentPage] = useState(1)
 
     const editProduct = (product) => {
-        console.log('product: ', product);
+        return
         product.id && navigate(`/editProduct/${product.id}`)
     }
 

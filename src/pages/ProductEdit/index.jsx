@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     Form,
@@ -29,6 +29,7 @@ const ProductEdit = () => {
     console.log('pid: ', pid);
 
     const [form] = Form.useForm()
+    const [loading, setLoading] = useState(false)
 
     // todo 后端返回
     const unitOptions = [
@@ -44,19 +45,27 @@ const ProductEdit = () => {
     };
 
     const submitSucceed = async (values = {}) => {
+        setLoading(true)
         const title = values.title;
         const price = values.price;
         const inventory = values.inventory;
         const images = values.images.map(({ url }) => url).join(';');
 
         // todo 提交到后端
-        await addProduct({
-            title,
-            price,
-            inventory,
-            images,
-        })
-        Toast.show({ content: JSON.stringify(values), icon: "success" });
+        try {
+            await addProduct({
+                title,
+                price,
+                inventory,
+                images,
+            })
+            Toast.show({ content: "上传成功", icon: "success" });
+            navigate('/productList')
+        } catch (error) {
+            console.log('error: ', error);
+        } finally {
+            setLoading(false)
+        }
     };
 
     const handleUploadSuccess = ({ responseText }) => {
@@ -106,7 +115,7 @@ const ProductEdit = () => {
                             width: "100%",
                         }}
                     >
-                        <Button nativeType="submit" type="primary">
+                        <Button nativeType="submit" disabled={loading} type="primary">
                             提交
                         </Button>
                     </div>
@@ -114,11 +123,11 @@ const ProductEdit = () => {
                 onFinish={(values) => submitSucceed(values)}
                 onFinishFailed={(values, errors) => submitFailed(errors)}
             >
-                <Form.Item label="商品名称" name="title">
+                <Form.Item required label="商品名称" name="title">
                     <Input placeholder="请输入商品名称" />
                 </Form.Item>
-                <Form.Item label="价格" name="price">
-                    <Input placeholder="请输入商品价格" />
+                <Form.Item required label="价格" name="price">
+                    <InputNumber defaultValue={0} placeholder="请输入商品价格" />
                 </Form.Item>
 
                 {/* <Form.Item
@@ -160,6 +169,17 @@ const ProductEdit = () => {
                     label="商品图片"
                     name="images"
                     initialValue={[]}
+                    required
+                    rules={[
+                        {
+                            validator: (
+                                ruleCfg,
+                                value
+                            ) => {
+                                return value.length > 0 ? true : Promise.reject(new Error('请至少上传一张商品图片'));
+                            }
+                        },
+                    ]}
                 >
                     <Uploader multiple maxCount="3" onDelete={handleDeleteFile} onSuccess={handleUploadSuccess} name="image" url="http://liuyu666.cn/common/upload" />
                 </Form.Item>
