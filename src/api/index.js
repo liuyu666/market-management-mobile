@@ -3,7 +3,7 @@ import { TOKEN_NAME } from "@/configs";
 
 // 创建axios实例  
 const instance = axios.create({
-    baseURL: 'http://liuyu666.cn/', // 基础URL  
+    baseURL: 'https://liuyu666.cn/api/', // 基础URL  
     timeout: 5000, // 请求超时时间  
     headers: {}, // 默认请求头  
 });
@@ -33,6 +33,8 @@ instance.interceptors.response.use(
         if (response.status === 200) {
             return response.data; // 只返回数据部分  
         } else if (response.status === 401) {
+            // 清除token信息
+            localStorage.removeItem(TOKEN_NAME);
             // 跳转登录页面
             location.href = location.origin + "/login"
         } else {
@@ -42,6 +44,8 @@ instance.interceptors.response.use(
     error => {
         // 对响应错误做点什么  
         if (error.response && error.response.status === 401) {
+            // 清除token信息
+            localStorage.removeItem(TOKEN_NAME);
             // 处理未授权问题，如跳转到登录页面  
             window.location.href = '/login';
         }
