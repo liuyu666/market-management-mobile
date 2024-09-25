@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "@/configs";
 import {
     Form,
     Input,
@@ -203,7 +204,7 @@ const ProductEdit = () => {
                                 },
                             ]}
                         >
-                            <Uploader multiple maxCount="3" onDelete={handleDeleteFile} onSuccess={handleUploadSuccess} name="image" url="https://liuyu666.cn/api/common/upload" />
+                            <Uploader multiple maxCount="3" onDelete={handleDeleteFile} onSuccess={handleUploadSuccess} name="image" url={`${BASE_URL}common/upload`} />
                         </Form.Item>
                     </Form>
                 )
@@ -301,7 +302,7 @@ const ProductEdit = () => {
                                 },
                             ]}
                         >
-                            <Uploader multiple maxCount="3" onDelete={handleDeleteFile} onSuccess={handleUploadSuccess} name="image" url="https://liuyu666.cn/api/common/upload" />
+                            <Uploader multiple maxCount="3" onDelete={handleDeleteFile} onSuccess={handleUploadSuccess} name="image" url={`${BASE_URL}common/upload`} />
                         </Form.Item>
                     </Form>
                 )
@@ -400,7 +401,7 @@ const ProductEdit = () => {
                                 },
                             ]}
                         >
-                            <Uploader multiple maxCount="3" onDelete={handleDeleteFile} onSuccess={handleUploadSuccess} name="image" url="https://liuyu666.cn/api/common/upload" />
+                            <Uploader multiple maxCount="3" onDelete={handleDeleteFile} onSuccess={handleUploadSuccess} name="image" url={`${BASE_URL}common/upload`} />
                         </Form.Item>
                     </Form>
                 )

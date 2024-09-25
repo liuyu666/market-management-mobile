@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { TOKEN_NAME } from "@/configs";
+import { TOKEN_NAME, BASE_URL } from "@/configs";
 
 // 创建axios实例  
 const instance = axios.create({
-    baseURL: 'https://liuyu666.cn/api/', // 基础URL  
+    baseURL: BASE_URL,
     timeout: 5000, // 请求超时时间  
     headers: {}, // 默认请求头  
 });
