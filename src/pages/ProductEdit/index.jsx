@@ -29,10 +29,10 @@ const ProductEdit = () => {
     }
 
     // 步骤条
-    const [stepNum, setStepNum] = useState(0)
+    const [stepNum, setStepNum] = useState(1)
     const handleStep = (step=1) => {
         const newVal = stepNum + step
-        if (newVal < 0 || newVal > 2) return;
+        if (newVal < 1 || newVal > 2) return;
         setStepNum(newVal)
     }
     
@@ -107,12 +107,12 @@ const ProductEdit = () => {
                 {pid ? "编辑商品": "增加商品"}
             </NavBar>
             <Steps value={stepNum}>
-                <Step value={0} title="商品信息" />
-                <Step value={1} title="商品规格" />
-                <Step value={2} title="商品库存" />
+                <Step value={1} title="商品信息" />
+                <Step value={2} title="商品规格" />
+                {/* <Step value={3} title="商品库存" /> */}
             </Steps>
             {
-                stepNum === 0 && (
+                stepNum === 1 && (
                     <Form
                         form={form}
                         style={{ "--nutui-form-item-label-width": "120px" }}
@@ -210,7 +210,7 @@ const ProductEdit = () => {
                 )
             }
             {
-                stepNum === 1 && (
+                stepNum === 2 && (
                     <Form
                         form={form}
                         style={{ "--nutui-form-item-label-width": "120px" }}
@@ -309,7 +309,7 @@ const ProductEdit = () => {
             }
 
             {
-                stepNum === 2 && (
+                stepNum === 3 && (
                     <Form
                         form={form}
                         style={{ "--nutui-form-item-label-width": "120px" }}
